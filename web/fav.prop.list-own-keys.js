@@ -14,6 +14,14 @@ function listOwnKeys(obj) {
       var arr = Object.getOwnPropertyNames(obj);
       for (var i = arr.length - 1; i >= 0; i--) {
         var elm = arr[i];
+        /* istanbul ignore if */
+        if (elm === 'caller' || elm === 'arguments') {
+          arr.splice(i, 1);
+        }
+      }
+      /* istanbul ignore if */
+      if (!('name' in obj)) {
+        arr.push('name');
       }
       return arr;
     }

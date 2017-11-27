@@ -118,19 +118,54 @@ describe('fav.prop.listOwnKeys', function() {
     expect(listOwnKeys(a)).to.have.members(['0', '1', 'aaa', 'bbb', 'length']);
   });
 
+  it('Should return property keys when the argument is a function',
+  function() {
+    expect(listOwnKeys(function() {})).to.have.members(
+      ['length', 'name', 'prototype']);
+
+    if (isSupportArrowFunction()) {
+      eval('expect(listOwnKeys(() => {})).to.have.members(' +
+        '["length", "name"])');
+    }
+
+    if (isSupportGenerator()) {
+      eval('expect(listOwnKeys(function *genFn() {})).to.have.members(' +
+        '["length", "name", "prototype"])');
+    }
+
+    if (isSupportAsyncAwait()) {
+      eval('expect(listOwnKeys(async function asyncFn() {})).to.have.' +
+        'members(["length", "name"])');
+    }
+  });
+
+/*
   it('Should return appended property keys when the argument is a function',
   function() {
+    var functionKeys = ['length', 'prototype'];
+    if (!isIE()) {
+      functionKeys.push('name');
+    }
+
+    if (isIojsLessThanV3()) {
+      functionKeys.push('arguments');
+      functionKeys.push('caller');
+    } else if (isBrowser() && !isFirefox()) {
+      functionKeys.push('arguments');
+      functionKeys.push('caller');
+    }
+
     var fn = function() {};
-    expect(listOwnKeys(fn)).to.have.members(['length', 'name', 'prototype']);
+    expect(listOwnKeys(fn)).to.have.members(functionKeys);
 
     fn.aaa = 'AAA';
-    expect(listOwnKeys(fn)).to.have.members(
-      ['aaa', 'length', 'name', 'prototype']);
+    expect(listOwnKeys(fn)).to.have.members(functionKeys.concat(['aaa']));
 
     Object.defineProperty(fn, 'bbb', { value: 'BBB' });
     expect(listOwnKeys(fn)).to.have.members(
-      ['aaa', 'bbb', 'length', 'name', 'prototype']);
+      functionKeys.concat(['aaa','bbb']));
   });
+*/
 
   it('Should return an empty string when the argument is a symbol',
   function() {
@@ -157,5 +192,124 @@ describe('fav.prop.listOwnKeys', function() {
     expect(listOwnKeys(symbol)).to.have.members([]);
   });
 });
+
+
+function isSupportArrowFunction() {
+  if (isNode()) {
+    return semver.gte(process.version, '4.0.0');
+  }
+
+  if (typeof xslet !== 'undefined' && typeof xslet.platform !== 'undefined') {
+    var ua = xslet.platform.ua;
+
+    // Check by latest version
+    if (ua.CHROME) {
+      return true;
+    }
+    if (ua.FIREFOX) {
+      return true;
+    }
+    if (ua.MSIE) {
+      return true;
+    }
+    if (ua.EDGE) {
+      return true;
+    }
+    if (ua.SAFARI) {
+      return true;
+    }
+    if (ua.VIVALDI) {
+      return true;
+    }
+    if (ua.PHANTOMJS) {
+      return true;
+    }
+
+    return false;
+  }
+
+  return false;
+}
+
+function isSupportAsyncAwait() {
+  if (isNode()) {
+    return semver.gte(process.version, '7.6.0');
+  }
+
+  if (typeof xslet !== 'undefined' && typeof xslet.platform !== 'undefined') {
+    var ua = xslet.platform.ua;
+
+    // Check by latest version
+    if (ua.CHROME) {
+      return true;
+    }
+    if (ua.FIREFOX) {
+      return true;
+    }
+    if (ua.MSIE) {
+      return true;
+    }
+    if (ua.EDGE) {
+      return true;
+    }
+    if (ua.SAFARI) {
+      return true;
+    }
+    if (ua.VIVALDI) {
+      return true;
+    }
+    if (ua.PHANTOMJS) {
+      return false;
+    }
+
+    return false;
+  }
+
+  return false;
+}
+
+function isSupportGenerator() {
+  if (isNode()) {
+    return semver.gte(process.version, '4.0.0');
+  }
+
+  if (typeof xslet !== 'undefined' && typeof xslet.platform !== 'undefined') {
+    var ua = xslet.platform.ua;
+
+    // Check by latest version
+    if (ua.CHROME) {
+      return true;
+    }
+    if (ua.FIREFOX) {
+      return true;
+    }
+    if (ua.MSIE) {
+      return true;
+    }
+    if (ua.EDGE) {
+      return true;
+    }
+    if (ua.SAFARI) {
+      return true;
+    }
+    if (ua.VIVALDI) {
+      return true;
+    }
+    if (ua.PHANTOMJS) {
+      return false;
+    }
+  }
+
+  return false;
+}
+
+function isNode() {
+  if (typeof process === 'object') {
+    if (typeof process.kill === 'function') { // exists from v0.0.6
+      return true;
+    }
+  }
+  return false;
+}
 
 })();

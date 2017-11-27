@@ -50,13 +50,19 @@ listOwnKeys({ a: 1, b: true, c: 'C' }); // => ['a', 'b', 'c' ]
 
 List enumerable and unenumerable own property keys of the given object.
 
-This function returns the same result of `Object.getOwnPropertyNames`, but this function returns an empty array when *obj* is nullish.
+This function returns the same result of `Object.getOwnPropertyNames` in strict mode except that this function returns an empty array when `obj` is nullish.
 
-***NOTE:*** *The result of `Object.getOwnPropertyNames` for a function is different between before and after of Node.js (io.js) v3. On v3 and laters it doesn't contain the properties `arguments` and `caller`, which are non-standard, but on earlier it contains them.*
+***NOTE:*** *The result of `Object.getOwnPropertyNames` for a function in strict mode is different between before and after Node.js (io.js) v3.
+On v3 and later it doesn't contain the properties `arguments` and `callar`.
+This function excludes `arguments` and `caller` properties even not in strict mode for same behaviors on all versions of Node.js.*
 
-***NOTE:*** *The results of `Object.getOwnPropertyNames` for a function on Some browsers, Chrome, Safari, Vivaldi, IE, and Edge also contain `arguments` and `caller`.*
+***NOTE:*** *On some browsers, Chrome, Safari, Vivaldi, Edge and IE, the result of `Object.getOwnPropertyNames` for a function in non-strict mode is different from in strict mode.
+It contains the properties `arguments` and `caller`. 
+This function excludes `arguments` and `caller` properties even not in strict mode for same behaviors on other platforms.*
 
-***NOTE:*** *The result of `Object.getOwnPropertyNames` for a function on IE is different from the results on other browsers. It contains `arguments` and `caller` properties, and does not contain `name` property.*
+***NOTE:*** *The result of `Object.getOwnPropertyNames` for a function on IE is different from results on other browsers and Node.js.
+It does not contain `name` property.
+This function append `name` properties to the result on IE for same behaviors on target browsers and Node.js*
 
 #### Parameter:
 

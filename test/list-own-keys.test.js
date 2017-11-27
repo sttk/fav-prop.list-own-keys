@@ -3,7 +3,6 @@
 var chai = require('chai');
 var expect = chai.expect;
 var semver = require('semver');
-
 var fav = {}; fav.prop = {}; fav.prop.listOwnKeys = require('..');
 
 var listOwnKeys = fav.prop.listOwnKeys;
@@ -118,6 +117,28 @@ describe('fav.prop.listOwnKeys', function() {
     expect(listOwnKeys(a)).to.have.members(['0', '1', 'aaa', 'bbb', 'length']);
   });
 
+  it('Should return property keys when the argument is a function',
+  function() {
+    expect(listOwnKeys(function() {})).to.have.members(
+      ['length', 'name', 'prototype']);
+
+    if (isSupportArrowFunction()) {
+      eval('expect(listOwnKeys(() => {})).to.have.members(' +
+        '["length", "name"])');
+    }
+
+    if (isSupportGenerator()) {
+      eval('expect(listOwnKeys(function *genFn() {})).to.have.members(' +
+        '["length", "name", "prototype"])');
+    }
+
+    if (isSupportAsyncAwait()) {
+      eval('expect(listOwnKeys(async function asyncFn() {})).to.have.' +
+        'members(["length", "name"])');
+    }
+  });
+
+/*
   it('Should return appended property keys when the argument is a function',
   function() {
     var functionKeys = ['length', 'prototype'];
@@ -143,6 +164,7 @@ describe('fav.prop.listOwnKeys', function() {
     expect(listOwnKeys(fn)).to.have.members(
       functionKeys.concat(['aaa','bbb']));
   });
+*/
 
   it('Should return an empty string when the argument is a symbol',
   function() {
@@ -170,41 +192,114 @@ describe('fav.prop.listOwnKeys', function() {
   });
 });
 
-function isIojsLessThanV3() {
-  if (isNode()) {
-    return semver.lt(process.version, '3.0.0');
-  }
-  return false;
-}
 
-function isFirefox() {
+function isSupportArrowFunction() {
   if (isNode()) {
+    return semver.gte(process.version, '4.0.0');
+  }
+
+  if (typeof xslet !== 'undefined' && typeof xslet.platform !== 'undefined') {
+    var ua = xslet.platform.ua;
+
+    // Check by latest version
+    if (ua.CHROME) {
+      return true;
+    }
+    if (ua.FIREFOX) {
+      return true;
+    }
+    if (ua.MSIE) {
+      return true;
+    }
+    if (ua.EDGE) {
+      return true;
+    }
+    if (ua.SAFARI) {
+      return true;
+    }
+    if (ua.VIVALDI) {
+      return true;
+    }
+    if (ua.PHANTOMJS) {
+      return true;
+    }
+
     return false;
   }
-  
-  if (typeof xslet !== 'undefined' && typeof xslet.platform !== 'undefined') {
-   var ua = xslet.platform.ua;
-   return ua.FIREFOX;
-  }
 
   return false;
 }
 
-function isIE() {
+function isSupportAsyncAwait() {
   if (isNode()) {
+    return semver.gte(process.version, '7.6.0');
+  }
+
+  if (typeof xslet !== 'undefined' && typeof xslet.platform !== 'undefined') {
+    var ua = xslet.platform.ua;
+
+    // Check by latest version
+    if (ua.CHROME) {
+      return true;
+    }
+    if (ua.FIREFOX) {
+      return true;
+    }
+    if (ua.MSIE) {
+      return true;
+    }
+    if (ua.EDGE) {
+      return true;
+    }
+    if (ua.SAFARI) {
+      return true;
+    }
+    if (ua.VIVALDI) {
+      return true;
+    }
+    if (ua.PHANTOMJS) {
+      return false;
+    }
+
     return false;
   }
-  
-  if (typeof xslet !== 'undefined' && typeof xslet.platform !== 'undefined') {
-   var ua = xslet.platform.ua;
-   return ua.MSIE;
-  }
 
   return false;
 }
 
-function isBrowser() {
-  return !isNode();
+function isSupportGenerator() {
+  if (isNode()) {
+    return semver.gte(process.version, '4.0.0');
+  }
+
+  if (typeof xslet !== 'undefined' && typeof xslet.platform !== 'undefined') {
+    var ua = xslet.platform.ua;
+
+    // Check by latest version
+    if (ua.CHROME) {
+      return true;
+    }
+    if (ua.FIREFOX) {
+      return true;
+    }
+    if (ua.MSIE) {
+      return true;
+    }
+    if (ua.EDGE) {
+      return true;
+    }
+    if (ua.SAFARI) {
+      return true;
+    }
+    if (ua.VIVALDI) {
+      return true;
+    }
+    if (ua.PHANTOMJS) {
+      return false;
+    }
+  }
+
+  return false;
 }
 
 function isNode() {
