@@ -1,6 +1,6 @@
 {
   "name": "@fav/prop.list-own-keys",
-  "version": "0.2.0",
+  "version": "0.0.0",
   "description": "Lists enumerable and unenumerable own property keys of an object.",
   "main": "index.js",
   "files": [
@@ -41,12 +41,14 @@
   },
   "homepage": "https://github.com/sttk/fav-prop.list-own-keys#readme",
   "devDependencies": {
+    "@xslet/platform": "^0.1.5",
     "browserify": "^14.5.0",
     "chai": "^3.5.0",
     "coveralls": "^3.0.0",
     "eslint": "^4.11.0",
     "mocha": "^3.4.2",
     "nyc": "^11.3.0",
+    "semver": "^5.4.1",
     "uglify-js": "^3.1.9"
   }
 }

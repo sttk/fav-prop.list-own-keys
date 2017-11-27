@@ -2,6 +2,7 @@
 
 var chai = require('chai');
 var expect = chai.expect;
+var semver = require('semver');
 
 var fav = {}; fav.prop = {}; fav.prop.listOwnKeys = require('..');
 
@@ -119,16 +120,28 @@ describe('fav.prop.listOwnKeys', function() {
 
   it('Should return appended property keys when the argument is a function',
   function() {
+    var functionKeys = ['length', 'prototype'];
+    if (!isIE()) {
+      functionKeys.push('name');
+    }
+
+    if (isIojsLessThanV3()) {
+      functionKeys.push('arguments');
+      functionKeys.push('caller');
+    } else if (isBrowser() && !isFirefox()) {
+      functionKeys.push('arguments');
+      functionKeys.push('caller');
+    }
+
     var fn = function() {};
-    expect(listOwnKeys(fn)).to.have.members(['length', 'name', 'prototype']);
+    expect(listOwnKeys(fn)).to.have.members(functionKeys);
 
     fn.aaa = 'AAA';
-    expect(listOwnKeys(fn)).to.have.members(
-      ['aaa', 'length', 'name', 'prototype']);
+    expect(listOwnKeys(fn)).to.have.members(functionKeys.concat(['aaa']));
 
     Object.defineProperty(fn, 'bbb', { value: 'BBB' });
     expect(listOwnKeys(fn)).to.have.members(
-      ['aaa', 'bbb', 'length', 'name', 'prototype']);
+      functionKeys.concat(['aaa','bbb']));
   });
 
   it('Should return an empty string when the argument is a symbol',
@@ -156,3 +169,49 @@ describe('fav.prop.listOwnKeys', function() {
     expect(listOwnKeys(symbol)).to.have.members([]);
   });
 });
+
+function isIojsLessThanV3() {
+  if (isNode()) {
+    return semver.lt(process.version, '3.0.0');
+  }
+  return false;
+}
+
+function isFirefox() {
+  if (isNode()) {
+    return false;
+  }
+  
+  if (typeof xslet !== 'undefined' && typeof xslet.platform !== 'undefined') {
+   var ua = xslet.platform.ua;
+   return ua.FIREFOX;
+  }
+
+  return false;
+}
+
+function isIE() {
+  if (isNode()) {
+    return false;
+  }
+  
+  if (typeof xslet !== 'undefined' && typeof xslet.platform !== 'undefined') {
+   var ua = xslet.platform.ua;
+   return ua.MSIE;
+  }
+
+  return false;
+}
+
+function isBrowser() {
+  return !isNode();
+}
+
+function isNode() {
+  if (typeof process === 'object') {
+    if (typeof process.kill === 'function') { // exists from v0.0.6
+      return true;
+    }
+  }
+  return false;
+}

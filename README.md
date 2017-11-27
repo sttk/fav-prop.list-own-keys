@@ -52,7 +52,11 @@ List enumerable and unenumerable own property keys of the given object.
 
 This function returns the same result of `Object.getOwnPropertyNames`, but this function returns an empty array when *obj* is nullish.
 
-***NOTE:*** *The behavior of `Object.getOwnPropertyNames` is different between before and after of Node.js (io.js) v3 when the argument is a function (about containing `arguments` and `caller`, or not). This function excludes these properties for same behaviors of all versions of Node.js.*
+***NOTE:*** *The result of `Object.getOwnPropertyNames` for a function is different between before and after of Node.js (io.js) v3. On v3 and laters it doesn't contain the properties `arguments` and `caller`, which are non-standard, but on earlier it contains them.*
+
+***NOTE:*** *The results of `Object.getOwnPropertyNames` for a function on Some browsers, Chrome, Safari, Vivaldi, IE, and Edge also contain `arguments` and `caller`.*
+
+***NOTE:*** *The result of `Object.getOwnPropertyNames` for a function on IE is different from the results on other browsers. It contains `arguments` and `caller` properties, and does not contain `name` property.*
 
 #### Parameter:
 
@@ -109,7 +113,7 @@ This program is free software under [MIT][mit-url] License.
 See the file LICENSE in this distribution for more details.
 
 [repo-url]: https://github.com/sttk/fav-prop.list-own-keys/
-[npm-img]: https://img.shields.io/badge/npm-v0.2.0-blue.svg
+[npm-img]: https://img.shields.io/badge/npm-v0.0.0-blue.svg
 [npm-url]: https://www.npmjs.com/package/@fav/prop.list-own-keys
 [mit-img]: https://img.shields.io/badge/license-MIT-green.svg
 [mit-url]: https://opensource.org/licenses/MIT
