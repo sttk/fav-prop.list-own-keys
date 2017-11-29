@@ -77,8 +77,8 @@ describe('fav.prop.listOwnKeys', function() {
     expect(listOwnKeys(s)).to.have.members(['0', '1', '2', 'length']);
   });
 
-  it('Should return an array having only `length` when the argument is a ' +
-  'string', function() {
+  it('Should return appended property keys when the argument is a string',
+  function() {
     expect(listOwnKeys(new String(''))).to.have.members(['length']);
     expect(listOwnKeys(new String('abc'))).to.have.members(
       ['0', '1', '2', 'length']);
@@ -139,8 +139,8 @@ describe('fav.prop.listOwnKeys', function() {
     }
   });
 
-  it('Should return appended property keys when the argument is a function',
-  function() {
+  it('Should return `length`, `name`, `prototype` and appended property ' +
+  'keys\n\twhen the argument is a function', function() {
     var fn = function() {};
     expect(listOwnKeys(fn)).to.have.members(['length', 'name', 'prototype']);
 
