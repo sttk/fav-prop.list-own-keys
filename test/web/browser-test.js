@@ -139,33 +139,19 @@ describe('fav.prop.listOwnKeys', function() {
     }
   });
 
-/*
   it('Should return appended property keys when the argument is a function',
   function() {
-    var functionKeys = ['length', 'prototype'];
-    if (!isIE()) {
-      functionKeys.push('name');
-    }
-
-    if (isIojsLessThanV3()) {
-      functionKeys.push('arguments');
-      functionKeys.push('caller');
-    } else if (isBrowser() && !isFirefox()) {
-      functionKeys.push('arguments');
-      functionKeys.push('caller');
-    }
-
     var fn = function() {};
-    expect(listOwnKeys(fn)).to.have.members(functionKeys);
+    expect(listOwnKeys(fn)).to.have.members(['length', 'name', 'prototype']);
 
     fn.aaa = 'AAA';
-    expect(listOwnKeys(fn)).to.have.members(functionKeys.concat(['aaa']));
+    expect(listOwnKeys(fn)).to.have.members(
+      ['length', 'name', 'prototype', 'aaa']);
 
     Object.defineProperty(fn, 'bbb', { value: 'BBB' });
     expect(listOwnKeys(fn)).to.have.members(
-      functionKeys.concat(['aaa','bbb']));
+      ['length', 'name', 'prototype', 'aaa', 'bbb']);
   });
-*/
 
   it('Should return an empty string when the argument is a symbol',
   function() {
