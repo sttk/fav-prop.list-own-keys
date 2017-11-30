@@ -60,9 +60,9 @@ This function excludes `arguments` and `caller` properties even not in strict mo
 It contains the properties `arguments` and `caller`. 
 This function excludes `arguments` and `caller` properties even not in strict mode for same behaviors on other platforms.*
 
-***NOTE:*** *The result of `Object.getOwnPropertyNames` for a function on IE is different from results on other browsers and Node.js.
+***NOTE:*** *The results of `Object.getOwnPropertyNames` for a function on IE and a no name function on Edge are different from results on other browsers and Node.js.
 It does not contain `name` property.
-This function append `name` properties to the result on IE for same behaviors on target browsers and Node.js*
+This function appends `name` property to the result on IE or Edge for same behaviors on target browsers and Node.js*
 
 #### Parameter:
 
