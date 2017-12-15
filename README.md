@@ -64,6 +64,12 @@ This function excludes `arguments` and `caller` properties even not in strict mo
 It does not contain `name` property.
 This function appends `name` property to the result on IE or Edge for same behaviors on target browsers and Node.js*
 
+***NOTE:*** *The value of `name` property of a no-name function is the first assigned variable's name on Node.js v6 or later, and that value is an empty string on the eariler.
+This function does no treatment about this differeneces.*
+
+***NOTE:*** *On some browsers, Chrome, Firefox, Safari, and Vivaldi, the `name` property of a no-name function is the first assigned variable's name. On Edge, that `name` property is an empty string. On IE, that `name` property is undefined.
+This function does no treatment about this differeneces.*
+
 #### Parameter:
 
 | Parameter |  Type  | Description                                |
