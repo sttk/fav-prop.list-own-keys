@@ -61,7 +61,7 @@ It contains the properties `arguments` and `caller`.
 This function excludes `arguments` and `caller` properties even not in strict mode for same behaviors on other platforms.*
 
 ***NOTE:*** *The results of `Object.getOwnPropertyNames` for a function on IE and a no name function on Edge are different from results on other browsers and Node.js.
-It does not contain `name` property.
+Those do not contain `name` property.
 This function appends `name` property to the result on IE or Edge for same behaviors on target browsers and Node.js*
 
 ***NOTE:*** *The value of `name` property of a no-name function is the first assigned variable's name on Node.js v6 or later, and that value is an empty string on the eariler.
@@ -84,7 +84,7 @@ An array of property keys.
 
 
 ## Checked                                                                      
-### Node.js (4〜8)
+### Node.js (4〜9)
 
 | Platform  |   4    |   5    |   6    |   7    |   8    |   9    |
 |:---------:|:------:|:------:|:------:|:------:|:------:|:------:|
@@ -125,7 +125,7 @@ This program is free software under [MIT][mit-url] License.
 See the file LICENSE in this distribution for more details.
 
 [repo-url]: https://github.com/sttk/fav-prop.list-own-keys/
-[npm-img]: https://img.shields.io/badge/npm-v0.1.1-blue.svg
+[npm-img]: https://img.shields.io/badge/npm-v1.0.0-blue.svg
 [npm-url]: https://www.npmjs.com/package/@fav/prop.list-own-keys
 [mit-img]: https://img.shields.io/badge/license-MIT-green.svg
 [mit-url]: https://opensource.org/licenses/MIT
